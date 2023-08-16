@@ -1,6 +1,8 @@
 package com.example.proy001.service;
 
 import com.example.proy001.domain.Registro;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,6 +24,10 @@ public interface RegistroService {
 
     public double calcularGastoLuz(Registro registro);
 
-    public List<Registro> listarRegistrosExcel();
+    public String UploadFile(@RequestParam("file") MultipartFile file);
+
+    public void listarRegistrosExcel(String fileName);
+
+
 
 }

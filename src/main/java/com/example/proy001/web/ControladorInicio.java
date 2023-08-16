@@ -37,7 +37,7 @@ public class ControladorInicio {
 
 
     @GetMapping("/agregar")
-    public String agregar(Registro registro) {
+    public String agregar() {
         return "modificar";
     }
 
@@ -72,23 +72,8 @@ public class ControladorInicio {
 
     @PostMapping("/up")
     public String subirArchivo(@RequestParam("file") MultipartFile file) {
-        try {
-            byte[] fileBytes = file.getBytes();
-
-            String builder = "C://Cursos/" + file.getOriginalFilename();
-            Path builderPath = Paths.get(builder);
-
-            Files.write(builderPath,fileBytes);
-            registroService.listarRegistrosExcel();
-
-            // Retornar una vista o redireccionar según necesites
-            return "redirect:/";
-        } catch (IOException e) {
-            // Manejar el error de carga de archivo
-            return "formularioCarga";
-        }
+        String fileName = registroService.UploadFile(file);
+        registroService.listarRegistrosExcel(fileName);
+        return "redirect:/";
     }
-
-
-
 }
