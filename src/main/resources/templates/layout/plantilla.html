@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="es">
+
+    <head th:fragment="head">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+        <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
+        <title>Pago de Luz</title>
+    </head>
+
+    <body>
+        <header th:fragment="header">
+            <nav class="navbar navbar-dark bg-dark p-0">
+                <div class="container d-flex justify-content-center" >
+                    <a th:href="@{/}" class="navbar-brand" th:text="#{plantilla.titulo}" style="font-size: 36px; text-align: center">Pago de Luz</a>
+                </div>
+            </nav>
+        </header>
+
+        <footer th:fragment="footer" style="color: white" >
+            <div class="navbar navbar-dark  bg-dark p-0">
+                <p> [[#{plantilla.pie-pagina}]] <a style="color: white;text-decoration: none"  href="http://PaginaPrincipal.com">PaginaPrincipal.com</a> </p>
+            </div>
+        </footer>
+    </body>
+</html>

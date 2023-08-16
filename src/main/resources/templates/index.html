@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+    <head th:replace="layout/plantilla::head">
+        <meta charset="UTF-8">
+        <title>Proyecto</title>
+    </head>
+    <body>
+        <header th:replace="layout/plantilla::header"></header>
+        <div th:if="${registros!= null }">
+            <table class="table table-striped" >
+                <tr>
+                    <th th:text="#{registro.numero}"></th>
+                    <th th:text="#{registro.fecha}"></th>
+                    <th th:text="#{registro.lecturaMedidor}"></th>
+                    <th th:text="#{registro.consumoTotal}"></th>
+                    <th th:text="#{registro.montoRecibo}"></th>
+                    <th th:text="#{registro.consumoVecino}"></th>
+                    <th th:text="#{registro.costo_watts}"></th>
+                    <th th:text="#{registro.montoVecino}"></th>
+                    <th th:text="#{registro.gastoLuzPropio}"></th>
+                    <th th:text="#{accion.editar}"></th>
+                    <th th:text="#{accion.eliminar}"></th>
+                </tr>
+                <tr th:each="registro:${registros}">
+                    <td th:text="${registro.id}">Id</td>
+                    <td th:text="${registro.fecha}">Fecha</td>
+                    <td th:text="${registro.lecturaMedidor}">Lectura Medidor</td>
+                    <td th:text="${registro.consumoTotal}">Consumo Total</td>
+                    <td th:text="${registro.montoRecibo}">Monto del Vecino (S/.)</td>
+                    <td th:text="${registro.consumoVecino}">Consumo del Vecino</td>
+                    <td th:text="${registro.costoWatts}">Costo/Watts (S/.)</td>
+                    <td th:text="${registro.montoVecino}">Monto del vecino (S/.)</td>
+                    <td th:text="${registro.gastoLuz}">Gasto de luz (S/.)</td>
+                    <td><a th:href="@{/editar/}+${registro.id}" th:text="#{accion.editar}"></a></td>
+                    <td><a th:href="@{/eliminar/}+${registro.id}" th:text="#{accion.eliminar}"></a></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <a th:href="@{/agregar}" th:text="#{accion.agregar}" class="btn btn-dark" >Crear Registro</a>
+            <a th:href="@{/upload}" th:text="#{accion.upload}" class="btn btn-dark" >Subir DataBase</a>
+        </div>
+
+        <br/>
+        <footer th:replace="layout/plantilla::footer"></footer>
+    </body>
+</html>

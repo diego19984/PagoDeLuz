@@ -1,0 +1,45 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="es"
+      xmlns="http://www.w3.org/1999/xhtml" >
+    <head th:replace="layout/plantilla::head">
+        <meta charset="UTF-8">
+        <title>Datos</title>
+    </head>
+    <body>
+        <header th:replace="layout/plantilla::header"></header>
+        <div class="d-flex justify-content-center " style="max-height: 600px; padding: 20px">
+            <div style="background-color:-moz-mac-accentdarkestshadow; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.3);">
+                <h2 th:text="#{registro.crear}" class="d-flex justify-content-center">Registro</h2>
+                <a th:href="@{/}" class="btn btn-dark" style="width: 100px; height: 40px;">[[#{accion.regresar}]]</a>
+
+                <form th:action="@{/guardar}" method="get" th:object="${registro}" >
+                    <br>
+                    <div>
+
+                        <input name="id" type="hidden" th:field="*{id}"/>
+                        <div style="max-width: 200px" >
+                            <label for="fecha">[[#{registro.fecha}]]</label>
+                            <input type="date"  class="form-control" name="fecha"  th:field="*{fecha}" th:value="${registro.fecha}"/>
+                        </div>
+
+                        <div style="max-width: 200px">
+                            <label for="leturaMedidor">[[#{registro.lecturaMedidor}]]</label>
+                            <input type="number" class="form-control" name="lecturaMedidor" th:field="*{lecturaMedidor}" step="0.01" min="0"/>
+                        </div>
+                        <div style="max-width: 200px">
+                            <label for="consumoTotal">[[#{registro.consumoTotal}]]</label>
+                            <input type="number" class="form-control" name="consumoTotal" th:field="*{consumoTotal}" step="0.01" min="0"/>
+                        </div>
+                        <div style="max-width: 200px">
+                            <label for="montoRecibo">[[#{registro.montoRecibo}]]</label>
+                            <input  type="number" class="form-control" name="montoRecibo" th:field="*{montoRecibo}"  step="0.01" min="0"/>
+                        </div>
+                    </div>
+                    <br>
+                    <input type="submit" name="guardar" th:value="#{accion.guardar}" class="btn btn-dark" style="width: 100px; height: 40px;" />
+                </form>
+            </div>
+        </div>
+        <footer th:replace="layout/plantilla:: footer"></footer>
+    </body>
+
+</html>
