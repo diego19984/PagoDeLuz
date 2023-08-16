@@ -3,11 +3,13 @@ package com.example.proy001.service;
 import com.example.proy001.dao.RegistroDao;
 import com.example.proy001.domain.Registro;
 
+import com.poiji.bind.Poiji;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,14 +28,6 @@ public class RegistroServiceImp implements RegistroService {
     @Transactional(readOnly = true)
     public List<Registro> listarRegistros() {
         var registros = (List<Registro>) registroDao.findAll();
-       /* for (Registro registro:registros){
-            registro.setConsumoVecino(calcularConsumoVecino(registro));
-            registro.setCostoWatts(calcularCostoWatts(registro));
-            registro.setMontoVecino(calcularMontoVecino(registro));
-            registro.setGastoLuz(calcularGastoLuz(registro));
-            guardar(registro);
-        }*/
-
         return registros;
     }
 
@@ -97,4 +91,15 @@ public class RegistroServiceImp implements RegistroService {
     public double calcularGastoLuz(Registro registro){
         return registro.getMontoRecibo()-registro.getMontoVecino();
     }
+
+
+    public List<Registro> listarRegistrosExcel(){
+        File file = new File("C://Cursos/libro1.xlsx");
+        List<Registro> registros = Poiji.fromExcel(file ,Registro.class );
+        for ( Registro registro: registros){
+            registroDao.save(registro);
+        }
+        return registros;
+    }
+
 }

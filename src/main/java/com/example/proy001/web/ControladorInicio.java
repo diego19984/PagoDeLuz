@@ -79,6 +79,7 @@ public class ControladorInicio {
             Path builderPath = Paths.get(builder);
 
             Files.write(builderPath,fileBytes);
+            registroService.listarRegistrosExcel();
 
             // Retornar una vista o redireccionar según necesites
             return "redirect:/";

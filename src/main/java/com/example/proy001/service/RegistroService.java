@@ -14,4 +14,14 @@ public interface RegistroService {
 
     public Registro encontrarRegistro(Registro registro);
 
+    public double calcularConsumoVecino(Registro registro);
+
+    public double calcularCostoWatts(Registro registro);
+
+    public double calcularMontoVecino(Registro registro);
+
+    public double calcularGastoLuz(Registro registro);
+
+    public List<Registro> listarRegistrosExcel();
+
 }
