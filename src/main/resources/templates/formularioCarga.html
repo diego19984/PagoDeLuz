@@ -6,13 +6,21 @@
     </head>
 <body>
     <header th:replace="layout/plantilla::header"></header>
-
+    <br/>
+    <a th:href="@{/}" class="btn btn-dark" style="width: 100px; height: 40px;">[[#{accion.regresar}]]</a>
+    <br/>
+    <br/>
     <form th:action="@{/up}" method="post" enctype="multipart/form-data">
         <input type="file" name="file">
-        <button type="submit" th:text="#{accion.upload}">Upload File</button>
+        <br/>
+        <br/>
+        <button type="submit" th:text="#{accion.upload}" class="btn btn-dark">Upload File</button>
+
     </form>
+
+
     <div>
-        <a th:href="@{/}" class="btn btn-dark" style="width: 100px; height: 40px;">[[#{accion.regresar}]]</a>
+
     </div>
     <br/>
     <footer th:replace="layout/plantilla::footer"></footer>

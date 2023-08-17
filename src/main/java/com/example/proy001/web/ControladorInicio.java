@@ -37,7 +37,7 @@ public class ControladorInicio {
 
 
     @GetMapping("/agregar")
-    public String agregar() {
+    public String agregar(Registro registro) {//por que tengo que agregar Registro registro ?
         return "modificar";
     }
 
