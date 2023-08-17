@@ -3,6 +3,7 @@ package com.example.proy001.service;
 import com.example.proy001.dao.RegistroDao;
 import com.example.proy001.domain.Registro;
 
+import com.example.proy001.dto.PagoLuzDto;
 import com.poiji.bind.Poiji;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static java.nio.file.Paths.get;
 
 
 @Service
@@ -62,23 +62,24 @@ public class RegistroServiceImp implements RegistroService {
 
     public double calcularConsumoVecino(Registro registro){
 
-        LocalDate fechaActual=registro.getFechaAsLocalDate();
-        LocalDate fechaAnterior=fechaActual.minusMonths(1);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        String fechaLecturaAnterior=fechaAnterior.format(formatter);
+        LocalDate fechaActual = LocalDate.parse(registro.getFecha(),formatter);
+        LocalDate fechaAnterior = fechaActual.minusMonths(1);
 
-        Optional<Registro> registroOptional=registroDao.findByFecha(fechaLecturaAnterior);
+        String fechaLecturaAnterior = fechaAnterior.format(formatter);
+
+        Optional<Registro> registroOptional = registroDao.findByFecha(fechaLecturaAnterior);
 
         if(registroOptional.isPresent()){
             Registro registroAnterior=registroOptional.get();
             double lecturaMesAnterior = registroAnterior.getLecturaMedidor();
             double lecturaActual=registro.getLecturaMedidor();
 
-            return lecturaActual-lecturaMesAnterior;
+            return Math.round((lecturaActual-lecturaMesAnterior)*100.0)/100.0;
         }
-        return registro.getLecturaMedidor();
+        return Math.round(registro.getLecturaMedidor()*100.0)/100.0;
 
     }
 
@@ -96,7 +97,7 @@ public class RegistroServiceImp implements RegistroService {
     }
 
     public double calcularGastoLuz(Registro registro){
-        return registro.getMontoRecibo()-registro.getMontoVecino();
+        return Math.round((registro.getMontoRecibo()-registro.getMontoVecino())*100.0)/100.0;
     }
 
 
@@ -114,9 +115,7 @@ public class RegistroServiceImp implements RegistroService {
             if(!Files.exists(uploadPath)){
                 Files.createDirectories(uploadPath);
             }
-
             Files.write(builderPath,fileBytes);
-
             return filePath;
         } catch (IOException e) {
 
@@ -125,10 +124,33 @@ public class RegistroServiceImp implements RegistroService {
 
     }
 
-    public void listarRegistrosExcel(String fileName){
-
+    public void procesarExcel(String fileName){
         File file = new File(fileName);
-        List<Registro> registros = Poiji.fromExcel(file ,Registro.class );
+        List<PagoLuzDto> pagosLuz = Poiji.fromExcel(file ,PagoLuzDto.class );
+        List<Registro> registros = new ArrayList<>();
+
+        DateTimeFormatter formatterEntrada= DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatterSalida= DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        for (PagoLuzDto pagoLuz:pagosLuz){
+
+            Registro registro = new Registro();
+
+            LocalDate fechaEntrada = LocalDate.parse(pagoLuz.getFecha(),formatterEntrada);
+            String fechaSalida = fechaEntrada.format(formatterSalida);
+
+            registro.setFecha(fechaSalida);
+            registro.setLecturaMedidor(pagoLuz.getLecturaMedidor());
+            registro.setConsumoTotal(pagoLuz.getConsumoTotal());
+            registro.setMontoRecibo(pagoLuz.getMontoRecibo());
+            registro.setConsumoVecino(pagoLuz.getConsumoVecino());
+            registro.setCostoWatts(pagoLuz.getCostoWatts());
+            registro.setMontoVecino(pagoLuz.getMontoVecino());
+            registro.setGastoLuz(pagoLuz.getGastoLuz());
+
+           registros.add(registro);
+        }
+
         registroDao.saveAll(registros);
     }
 

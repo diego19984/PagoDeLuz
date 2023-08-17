@@ -5,8 +5,11 @@
         <title>Proyecto</title>
     </head>
     <body>
-        <header th:replace="layout/plantilla::header"></header>
-        <div th:if="${registros!= null }">
+        <header th:replace="layout/plantilla::header" ></header>
+        <div >
+
+        </div>
+        <div th:if="${registros!= null }" >
             <table class="table table-striped" >
                 <tr>
                     <th th:text="#{registro.numero}"></th>

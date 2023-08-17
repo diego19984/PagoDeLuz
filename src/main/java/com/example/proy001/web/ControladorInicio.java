@@ -12,13 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 
 @Controller
@@ -69,11 +62,10 @@ public class ControladorInicio {
         return "formularioCarga"; // Retorna la vista para mostrar el formulario
     }
 
-
     @PostMapping("/up")
     public String subirArchivo(@RequestParam("file") MultipartFile file) {
         String fileName = registroService.UploadFile(file);
-        registroService.listarRegistrosExcel(fileName);
+        registroService.procesarExcel(fileName);
         return "redirect:/";
     }
 }
